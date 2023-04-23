@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>PETA PERSEBARAN POS PEMADAM KEBAKARAN</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+  <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+  <link rel="stylesheet" href="css/leaflet-search.css">
+  <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+  <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- Favicons -->
+  <link href="assets/img/—Pngtree—fire safety fireman fire truck_5471145.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Squadfree
+  * Updated: Mar 10 2023 with Bootstrap v5.2.3
+  * Template URL: https://bootstrapmade.com/squadfree-free-bootstrap-template-creative/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+  <script src="js/qgis2web_expressions.js"></script>
+  <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+  <script src="js/leaflet.rotatedMarker.js"></script>
+  <script src="js/leaflet.pattern.js"></script>
+  <script src="js/leaflet-hash.js"></script>
+  <script src="js/Autolinker.min.js"></script>
+  <script src="js/rbush.min.js"></script>
+  <script src="js/labelgun.min.js"></script>
+  <script src="js/labels.js"></script>
+  <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+  <script src="js/leaflet-search.js"></script>
+  <script src="data\batasjakarta_1.js"></script>
+  <script src="data\pospemadam_2.js"></script>
+<body>
+<style>
+  #map{
+    width: 100%;
+    height: 652px;
+  }
+  #map1{
+    width: 100%;
+    height: 700px;
+  }
+</style>
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top header-transparent">
+    <div class="container d-flex align-items-center justify-content-center position-relative">
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li class="dropdown nav-link scrollto"><a href="#map-1"><span>Peta</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a class="nav-link scrollto" href="#map-1">Peta Daerah Rawan Kebakaran</a></li>
+              </li>
+              <li><a class="nav-link scrollto" href="#map-2">Peta Persebaran Pos Pemadam Kebakaran</a></li>
+            </ul>
+          </li>
+          <li><a class="nav-link scrollto" href="#penyebab">Penyebab</a></li>
+          <li><a class="nav-link scrollto" href="#tips">Tips</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero">
+    <div class="hero-container" data-aos="fade-up">
+      <h1 class="text-white">Welcome to my website mapping</h1>
+      <h2 class="text-dark">This Website Giving a Map and Information About Fire Disaster</h2>
+      <a href="#map-1" class="btn-get-started scrollto"><i class="bx bx-chevrons-down"></i></a>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="map-1" class="about">
+      <div class="container">
+        <div class="row no-gutters" style="border: 2px solid black;" data-aos="fade-up">
+          <div class="content col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" >
+            <div class="content" id="map" style="border-right: 0.5px solid black;">
+            </div>
+            <script>
+            var map = L.map('map', {
+                zoomControl:true, maxZoom:28, minZoom:1
+            }).fitBounds([[-6.4236858585757926,106.48890245222825],[-6.0265176601897235,107.243748982418]]);
+            var hash = new L.Hash(map);
+            map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+            var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+            L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+            var bounds_group = new L.featureGroup([]);
+            function setBounds() {
+            }
+            map.createPane('pane_OpenStreetMap_0');
+            map.getPane('pane_OpenStreetMap_0').style.zIndex = 400;
+            var layer_OpenStreetMap_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                pane: 'pane_OpenStreetMap_0',
+                opacity: 1.0,
+                attribution: '',
+                minZoom: 1,
+                maxZoom: 28,
+                minNativeZoom: 0,
+                maxNativeZoom: 19
+            });
+            layer_OpenStreetMap_0;
+            map.addLayer(layer_OpenStreetMap_0);
+            function pop_batasjakarta_1(feature, layer) {
+                var popupContent = '<table>\
+                        <tr>\
+                            <td colspan="2">' + '<strong>' + (feature.properties['KAB_KOTA'] !== null ? autolinker.link(feature.properties['KAB_KOTA'].toLocaleString()) : '') + '</td>\
+                        </tr>\
+                        <tr>\
+                            <td colspan="2">' + 'Jumlah Kasus: ' + '<strong>' + (feature.properties['frekuensi'] !== null ? autolinker.link(feature.properties['frekuensi'].toLocaleString()) : '') + ' Kasus' + '</td>\
+                        </tr>\
+                        <tr>\
+                            <td colspan="2">' + 'Luas Total Kerugian: ' + '<strong>' +(feature.properties['luas_area_kerugian(m2)'] !== null ? autolinker.link(feature.properties['luas_area_kerugian(m2)'].toLocaleString()) : '') + ' Ha' + '</td>\
+                        </tr>\
+                        <tr>\
+                            <td colspan="2">' + 'Petugas Luka: ' + '<strong>' +(feature.properties['petugas_luka'] !== null ? autolinker.link(feature.properties['petugas_luka'].toLocaleString()) : '') + ' orang' + '</td>\
+                        </tr>\
+                        <tr>\
+                            <td colspan="2">' + 'Warga Meninggal: '+ '<strong>' + (feature.properties['warga_mati'] !== null ? autolinker.link(feature.properties['warga_mati'].toLocaleString()) : '') + ' orang' + '</td>\
+                        </tr>\
+                        <tr>\
+                            <td colspan="2">' + 'Warga Luka: '+ '<strong>' + (feature.properties['warga_luka'] !== null ? autolinker.link(feature.properties['warga_luka'].toLocaleString()) : '') + ' orang' + '</td>\
+                        </tr>\
+                        <tr>\
+                            <td colspan="2">' + 'Jumlah KK Terdampak: '+ '<strong>' +(feature.properties['jumlah_kk_terkena_bencana'] !== null ? autolinker.link(feature.properties['jumlah_kk_terkena_bencana'].toLocaleString()) : '') + ' KK' + '</td>\
+                        </tr>\
+                        <tr>\
+                            <td colspan="2">' + 'Jumlah Warga Terdampak: '+ '<strong>' +(feature.properties['jumlah_jiwa_terkena_bencana'] !== null ? autolinker.link(feature.properties['jumlah_jiwa_terkena_bencana'].toLocaleString()) : '') + ' orang' + '</td>\
+                        </tr>\
+                        <tr>\
+                            <td colspan="2">' + 'Jumlah Kerugian Total: '+ '<strong>' + 'Rp.' + (feature.properties['jumlah_taksiran_kerugian_(rp)'] !== null ? autolinker.link(feature.properties['jumlah_taksiran_kerugian_(rp)'].toLocaleString()) : '') + '</td>\
+                        </tr>\
+                    </table>';
+                layer.bindPopup(popupContent, {maxHeight: 400});
+            }
+    
+            function style_batasjakarta_1_0(feature) {
+                if (feature.properties['frekuensi'] >= 9.000000 && feature.properties['frekuensi'] <= 160.000000 ) {
+                    return {
+                    pane: 'pane_batasjakarta_1',
+                    opacity: 1,
+                    color: 'rgba(35,35,35,1.0)',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 1.0, 
+                    fill: true,
+                    fillOpacity: 1,
+                    fillColor: 'rgba(255,255,255,1.0)',
+                    interactive: true,
+                }
+                }
+                if (feature.properties['frekuensi'] >= 160.000000 && feature.properties['frekuensi'] <= 257.000000 ) {
+                    return {
+                    pane: 'pane_batasjakarta_1',
+                    opacity: 1,
+                    color: 'rgba(35,35,35,1.0)',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 1.0, 
+                    fill: true,
+                    fillOpacity: 1,
+                    fillColor: 'rgba(255,191,191,1.0)',
+                    interactive: true,
+                }
+                }
+                if (feature.properties['frekuensi'] >= 257.000000 && feature.properties['frekuensi'] <= 333.000000 ) {
+                    return {
+                    pane: 'pane_batasjakarta_1',
+                    opacity: 1,
+                    color: 'rgba(35,35,35,1.0)',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 1.0, 
+                    fill: true,
+                    fillOpacity: 1,
+                    fillColor: 'rgba(255,128,128,1.0)',
+                    interactive: true,
+                }
+                }
+                if (feature.properties['frekuensi'] >= 333.000000 && feature.properties['frekuensi'] <= 349.000000 ) {
+                    return {
+                    pane: 'pane_batasjakarta_1',
+                    opacity: 1,
+                    color: 'rgba(35,35,35,1.0)',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 1.0, 
+                    fill: true,
+                    fillOpacity: 1,
+                    fillColor: 'rgba(255,64,64,1.0)',
+                    interactive: true,
+                }
+                }
+                if (feature.properties['frekuensi'] >= 349.000000 && feature.properties['frekuensi'] <= 397.000000 ) {
+                    return {
+                    pane: 'pane_batasjakarta_1',
+                    opacity: 1,
+                    color: 'rgba(35,35,35,1.0)',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 1.0, 
+                    fill: true,
+                    fillOpacity: 1,
+                    fillColor: 'rgba(255,0,0,1.0)',
+                    interactive: true,
+                }
+                }
+            }
+            map.createPane('pane_batasjakarta_1');
+            map.getPane('pane_batasjakarta_1').style.zIndex = 401;
+            map.getPane('pane_batasjakarta_1').style['mix-blend-mode'] = 'normal';
+            var layer_batasjakarta_1 = new L.geoJson(json_batasjakarta_1, {
+                attribution: '',
+                interactive: true,
+                dataVar: 'json_batasjakarta_1',
+                layerName: 'layer_batasjakarta_1',
+                pane: 'pane_batasjakarta_1',
+                onEachFeature: pop_batasjakarta_1,
+                style: style_batasjakarta_1_0,
+            });
+            bounds_group.addLayer(layer_batasjakarta_1);
+            map.addLayer(layer_batasjakarta_1);
+            var osmGeocoder = new L.Control.Geocoder({
+                collapsed: true,
+                position: 'topleft',
+                text: 'Search',
+                title: 'Testing'
+            }).addTo(map);
+            document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+            .className += ' fa fa-search';
+            document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+            .title += 'Search for a place';
+            setBounds();
+            map.addControl(new L.Control.Search({
+                layer: layer_batasjakarta_1,
+                initial: false,
+                hideMarkerOnCollapse: true,
+                propertyName: 'KAB_KOTA'}));
+            document.getElementsByClassName('search-button')[0].className +=
+             ' fa fa-binoculars';
+            </script>
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1">
+            <div class="icon-boxes d-flex flex-column justify-content-center">
+              <h2 class="text-center" data-aos="fade-up">PETA PERSEBARAN DAERAH RAWAN KEBAKARAN DKI JAKARTA</h2>
+              <div class="row align-items-center d-flex">
+                <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                <div class="col-md-12 icon-box mt-0 mb-0" data-aos="fade-up" data-aos-delay="100">
+                  <img class="mt-0" src="images\compass-160863_1280.png" alt="" style="width: 45px; position: relative; bottom: 5px; ">
+                  <p class="mt-0"></p>
+                </div>
+                <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                <div class="col-md-12 icon-box" id="legend" data-aos="fade-up" data-aos-delay="200">
+                  <h4 class="text-center mt-2">LEGENDA</h4>
+                  <div class="icon-legend">
+                    <ul>
+                        <li><img src="legend\batasjakarta_1_SangatRendah0.png" alt=""></li>
+                        <li><img src="legend\batasjakarta_1_Rendah1.png" alt=""></li>
+                        <li><img src="legend\batasjakarta_1_Sedang2.png" alt=""></li>
+                        <li><img src="legend\batasjakarta_1_Tinggi3.png" alt=""></li>
+                        <li><img src="legend\batasjakarta_1_SangatTinggi4.png" alt=""></li>
+                    </ul>
+                    <div>
+                        <p>Sangat Rendah</p>
+                        <p>Rendah</p>
+                        <p>Sedang</p>
+                        <p>Tinggi</p>
+                        <p>Sangat Tinggi</p>
+                    </div>
+                  </div>
+                </div>
+                <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                <div class="col-md-12 icon-box" data-aos="fade-up" data-aos-delay="300">
+                  <h4 class="text-center">PEMBUAT PETA: </h4>
+                  <p><strong>EURICO ADITYA AMILUDIN</strong></p>
+                </div>
+                <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                <div class="col-md-12 icon-box" data-aos="fade-up" data-aos-delay="400">
+                  <h4>DOSEN PENGAMPU:</h4>
+                  <p><strong>HIDAYAT PANUNTUN, S.T., M.Eng., D.Sc.</strong></p>
+                </div>
+                <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                <div class="col-md-12 icon-box" data-aos="fade-up" data-aos-delay="400">
+                  <h4>SUMBER DATA:</h4>
+                  <p class="mt-0"><a href="https://data.jakarta.go.id/">https://data.jakarta.go.id/</a></p>
+                </div>
+                <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                <div class="col-md-12 icon-box" data-aos="fade-up" data-aos-delay="400">
+                  <img src="https://agricia.faperta.ugm.ac.id/wp-content/uploads/sites/377/2018/06/logo-ugm-png.png" alt="" width="30px">
+                  <p>PROGRAM STUDI D4 TEKNOLOGI SURVEI DAN PEMETAAN DASAR <br> DEPARTEMEN TEKNOLOGI KEBUMIAN <br> SEKOLAH VOKASI <br> UNIVERSITAS GADJAH MADA <br>2023 </p>
+                </div>
+              </div>
+            </div><!-- End .content-->
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Section -->
+
+    <!-- ======= Services Section ======= -->
+    <section id="penyebab" class="services">
+      <div class="container">
+
+        <div class="section-title" data-aos="fade-in" data-aos-delay="100">
+          <h2>PENYEBAB YANG BIASA MEMICU TERJADINYA KEBAKARAN</h2>
+          <p>MENURUT KASUS YANG TERJADI</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1">
+            <div class="icon-box" data-aos="fade-up">
+              <div class="icon"><i class="fa fa-bolt"></i></div>
+              <h4 class="title"><a href="">Konsleting Listrik</a></h4>
+            </div>
+          </div>
+
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1">
+            <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
+              <div class="icon"><i class="fa fa-gas-pump"></i></div>
+              <h4 class="title"><a href="">Kebocoran Gas Kompor Rumah Tangga</a></h4>
+            </div>
+          </div>
+
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1">
+            <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
+              <div class="icon"><i class="fa fa-leaf"></i></div>
+              <h4 class="title"><a href="">Membakar Sampah Sembarangan</a></h4>
+            </div>
+          </div>
+
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1">
+            <div class="icon-box" data-aos="fade-up" data-aos-delay="300">
+              <div class="icon"><i class="fa fa-smoking"></i></div>
+              <h4 class="title"><a href="">Membuang Puntung Rokok Sembarangan</a></h4>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Services Section -->
+
+    <!-- ======= Counts Section ======= -->
+    <section id="counts" class="counts  section-bg">
+      <div class="container">
+
+        <div class="row no-gutters">
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
+            <div class="count-box">
+              <i class="mt-4 fa fa-bolt"></i>
+              <span data-purecounter-start="0" data-purecounter-end="938" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Konsleting Listrik</strong></p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
+            <div class="count-box">
+              <i class="mt-4 fa fa-gas-pump"></i>
+              <span data-purecounter-start="0" data-purecounter-end="180" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Kebocoran Gas Kompor Rumah Tangga</strong></p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
+            <div class="count-box">
+              <i class="mt-4 fa fa-leaf"></i>
+              <span data-purecounter-start="0" data-purecounter-end="123" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Membakar Sampah Sembarangan</strong></p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch">
+            <div class="count-box">
+              <i class="mt-4 fa fa-smoking"></i>
+              <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1" class="purecounter"></span>
+              <p><strong>Membuang Puntung Rokok Sembarangan</strong></p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Counts Section -->
+    <!-- ======= Testimonials Section ======= -->
+    <section id="tips" class="testimonials section-bg">
+      <div class="container">
+
+        <div class="section-title" data-aos="fade-in" data-aos-delay="100">
+          <h2>TIPS UNTUK MENANGGULANGI BENCANA KEBAKARAN</h2>
+        </div>
+
+        <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  <strong>Mematikan Alat Elektronik</strong>
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="https://1.bp.blogspot.com/-0Xo4vyMMgZA/YVPqGLXicuI/AAAAAAAAAeg/GYF-bMK6N7o5v0-KEIRM5870apywmMlpwCLcBGAsYHQ/s682/penyebab-korsleting-listrik.jpg" class="testimonial-img" alt="">
+                <h3>Konsleting Listrik</h3>
+                <h4>Tips mencegah kebakaran yang pertama adalah mematikan alat elektronik saat bepergian. Pasalnya, penggunaan listrik berlebihan yang menyebabkan arus pendek listrik dapat meningkatkan potensi terjadinya kebakaran. Oleh karena itu, jangan lupa untuk mencabut semua peralatan elektronik yang tidak digunakan.</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  <strong>Jangan Tinggalkan Kompor dalam Keadaan Menyala</strong>
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="https://png.pngtree.com/png-vector/20211201/ourlarge/pngtree-hand-drawn-kompor-gas-mini-vector-clip-art-png-image_4044552.png" class="testimonial-img" alt="">
+                <h3>Kelalaian</h3>
+                <h4>Tips mencegah kebakaran selanjutnya adalah tidak meninggalkan kompor dalam keadaan menyala. Jadi, pastikan untuk tetap berada di dapur selama proses memasak berlangsung guna mengetahui potensi kebocoran tabung gas yang menjadi pemicu kebakaran.</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  <strong>Jauhkan Benda yang Mudah Terbakar</strong>
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="https://media.istockphoto.com/id/1407631465/id/vektor/ikon-peringatan-kebakaran-tanda-yang-mudah-terbakar-bahaya-kimia-bahaya-kebakaran-simbol.jpg?s=612x612&w=0&k=20&c=EZ1yIybLRM7IRRlCc5wc9dqr9iGIl7iHmihFmbPhgUg=" class="testimonial-img" alt="">
+                <h3>Flammable Stuff</h3>
+                <h4>Tips mencegah kebakaran selanjutnya adalah menjauhkan benda-benda yang mudah terbakar, seperti plastik, kertas, dan kain. Jangan menyimpan benda-benda tersebut di dekat kompor atau lilin karena api dengan cepat menyambar dan menyebabkan kebakaran di dalam rumah.</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  <strong>Jangan Membakar Sampah di Sekitar Rumah</strong>
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="https://st4.depositphotos.com/14846838/20911/v/600/depositphotos_209114194-stock-illustration-fire-flames-in-trash-can.jpg" class="testimonial-img" alt="">
+                <h3>Pencemaran Lingkungan</h3>
+                <h4>kamu dilarang untuk membakar sampah di sekitar rumah. Sama halnya dengan puntung rokok yang masih menyala, terbangnya sampah yang terbakar bisa menjadi salah satu pemicu kebakaran. Alih-alih dibakar, dedaunan kering yang berjatuhan dari pohon bisa kamu jadikan sebagai pupuk kompos.</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <p>
+                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                  <strong>Jangan Merokok di Dalam Rumah</strong>
+                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+                <img src="data:image/png;base64,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" class="testimonial-img" alt="">
+                <h3>No Smoking</h3>
+                <h4>Selain menyebabkan masalah paru-paru, merokok bisa menjadi pemicu kebakaran. Jika puntung dibuang dalam keadaan masih menyala dan tertiup angin, hal tersebut dapat memicu kobaran api. Apalagi jika puntung yang masih menyala menempel pada sofa dan benda lain yang mudah terbakar.</h4>
+              </div>
+            </div><!-- End testimonial item -->
+
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+    </section><!-- End Testimonials Section -->
+        <!-- ======= About Section ======= -->
+        <section id="map-2" class="about">
+          <div class="container">
+            <div class="row no-gutters" style="border: 2px solid black;" data-aos="fade-up">
+              <div class="content col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" >
+                <div class="content" id="map1" style="border-right: 0.5px solid black;">
+                </div>
+                <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/batasjakarta_1.js"></script>
+        <script src="data/pospemadam_2.js"></script>
+        <script>
+        var map1 = L.map('map1', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-6.443786768049362,106.40796280748108],[-5.9840149323927,107.28179202199198]]);
+        var hash = new L.Hash(map1);
+        map1.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map1);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map1.createPane('pane_OpenStreetMap_0');
+        map1.getPane('pane_OpenStreetMap_0').style.zIndex = 400;
+        var layer_OpenStreetMap_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMap_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OpenStreetMap_0;
+        map1.addLayer(layer_OpenStreetMap_0);
+        function pop_batasjakarta_1(feature, layer) {
+            var popupContent = '<table>\
+                  <tr>\
+                      <td colspan="2">' + '<strong>' + (feature.properties['KAB_KOTA'] !== null ? autolinker.link(feature.properties['KAB_KOTA'].toLocaleString()) : '') + '</td>\
+                  </tr>\
+                  <tr>\
+                      <td colspan="2">' + 'Jumlah Kasus: ' + '<strong>' + (feature.properties['frekuensi'] !== null ? autolinker.link(feature.properties['frekuensi'].toLocaleString()) : '') + ' Kasus' + '</td>\
+                  </tr>\
+                  <tr>\
+                      <td colspan="2">' + 'Luas Total Kerugian: ' + '<strong>' +(feature.properties['luas_area_kerugian(m2)'] !== null ? autolinker.link(feature.properties['luas_area_kerugian(m2)'].toLocaleString()) : '') + ' Ha' + '</td>\
+                  </tr>\
+                  <tr>\
+                      <td colspan="2">' + 'Petugas Luka: ' + '<strong>' +(feature.properties['petugas_luka'] !== null ? autolinker.link(feature.properties['petugas_luka'].toLocaleString()) : '') + ' orang' + '</td>\
+                  </tr>\
+                  <tr>\
+                      <td colspan="2">' + 'Warga Meninggal: '+ '<strong>' + (feature.properties['warga_mati'] !== null ? autolinker.link(feature.properties['warga_mati'].toLocaleString()) : '') + ' orang' + '</td>\
+                  </tr>\
+                  <tr>\
+                      <td colspan="2">' + 'Warga Luka: '+ '<strong>' + (feature.properties['warga_luka'] !== null ? autolinker.link(feature.properties['warga_luka'].toLocaleString()) : '') + ' orang' + '</td>\
+                  </tr>\
+                  <tr>\
+                      <td colspan="2">' + 'Jumlah KK Terdampak: '+ '<strong>' +(feature.properties['jumlah_kk_terkena_bencana'] !== null ? autolinker.link(feature.properties['jumlah_kk_terkena_bencana'].toLocaleString()) : '') + ' KK' + '</td>\
+                  </tr>\
+                  <tr>\
+                      <td colspan="2">' + 'Jumlah Warga Terdampak: '+ '<strong>' +(feature.properties['jumlah_jiwa_terkena_bencana'] !== null ? autolinker.link(feature.properties['jumlah_jiwa_terkena_bencana'].toLocaleString()) : '') + ' orang' + '</td>\
+                  </tr>\
+                  <tr>\
+                      <td colspan="2">' + 'Jumlah Kerugian Total: '+ '<strong>' + 'Rp.' + (feature.properties['jumlah_taksiran_kerugian_(rp)'] !== null ? autolinker.link(feature.properties['jumlah_taksiran_kerugian_(rp)'].toLocaleString()) : '') + '</td>\
+                  </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_batasjakarta_1_0(feature) {
+            switch(String(feature.properties['KAB_KOTA'])) {
+                case 'JAKARTA BARAT':
+                    return {
+                pane: 'pane_batasjakarta_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'JAKARTA PUSAT':
+                    return {
+                pane: 'pane_batasjakarta_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,213,213,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'JAKARTA SELATAN':
+                    return {
+                pane: 'pane_batasjakarta_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,170,170,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'JAKARTA TIMUR':
+                    return {
+                pane: 'pane_batasjakarta_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,128,128,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'JAKARTA UTARA':
+                    return {
+                pane: 'pane_batasjakarta_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,85,85,1.0)',
+                interactive: false,
+            }
+                    break;
+                case 'KEPULAUAN SERIBU':
+                    return {
+                pane: 'pane_batasjakarta_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,42,42,1.0)',
+                interactive: false,
+            }
+                    break;
+            }
+        }
+        map1.createPane('pane_batasjakarta_1');
+        map1.getPane('pane_batasjakarta_1').style.zIndex = 401;
+        map1.getPane('pane_batasjakarta_1').style['mix-blend-mode'] = 'normal';
+        var layer_batasjakarta_1 = new L.geoJson(json_batasjakarta_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_batasjakarta_1',
+            layerName: 'layer_batasjakarta_1',
+            pane: 'pane_batasjakarta_1',
+            onEachFeature: pop_batasjakarta_1,
+            style: style_batasjakarta_1_0,
+        });
+        bounds_group.addLayer(layer_batasjakarta_1);
+        map1.addLayer(layer_batasjakarta_1);
+        function pop_pospemadam_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + '<strong>' + 'Kecamatan: ' + '</strong>' + (feature.properties['Kecamatan'] !== null ? autolinker.link(feature.properties['Kecamatan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + '<strong>' + 'Kelurahan: ' + '</strong>' + (feature.properties['Kelurahan'] !== null ? autolinker.link(feature.properties['Kelurahan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + '<strong>' + 'Nama Pos: ' + '</strong>' + (feature.properties['Nama Bangunan'] !== null ? autolinker.link(feature.properties['Nama Bangunan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_pospemadam_2_0() {
+            return {
+                pane: 'pane_pospemadam_2',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,0,0,1.0)',
+                interactive: true,
+            }
+        }
+        map1.createPane('pane_pospemadam_2');
+        map1.getPane('pane_pospemadam_2').style.zIndex = 402;
+        map1.getPane('pane_pospemadam_2').style['mix-blend-mode'] = 'normal';
+        var layer_pospemadam_2 = new L.geoJson(json_pospemadam_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_pospemadam_2',
+            layerName: 'layer_pospemadam_2',
+            pane: 'pane_pospemadam_2',
+            onEachFeature: pop_pospemadam_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_pospemadam_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_pospemadam_2);
+        map1.addLayer(layer_pospemadam_2);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map1);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        setBounds();
+        map1.addControl(new L.Control.Search({
+            layer: layer_pospemadam_2,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'Kecamatan'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        </script>
+              </div>
+              <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1">
+                <div class="icon-boxes d-flex flex-column justify-content-center">
+                  <h2 class="text-center" data-aos="fade-up">PETA PERSEBARAN POS PEMADAM KEBAKARAN DKI JAKARTA</h2>
+                  <div class="row align-items-center d-flex">
+                    <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                    <div class="col-md-12 icon-box mt-0 mb-0" data-aos="fade-up" data-aos-delay="100">
+                      <img class="mt-0" src="images\compass-160863_1280.png" alt="" style="width: 30px; position: relative; bottom: 5px; ">
+                      <p class="mt-0"></p>
+                    </div>
+                    <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                    <div class="col-md-12 icon-box" id="legend" data-aos="fade-up" data-aos-delay="200">
+                      <h4 class="text-center mt-2">LEGENDA</h4>
+                      <div class="icon-legend">
+                        <ul>
+                            <li><img src="legend\pospemadam_2.png" alt=""></li>
+                            <li><img src="legend\batasjakarta_1_JAKARTABARAT0.png" alt=""></li>
+                            <li><img src="legend\batasjakarta_1_JAKARTAPUSAT1.png" alt=""></li>
+                            <li><img src="legend\batasjakarta_1_JAKARTASELATAN2.png" alt=""></li>
+                            <li><img src="legend\batasjakarta_1_JAKARTATIMUR3.png" alt=""></li>
+                            <li><img src="legend\batasjakarta_1_JAKARTAUTARA4.png" alt=""></li>
+                            <li><img src="legend\batasjakarta_1_KEPULAUANSERIBU5.png" alt=""></li>
+                        </ul>
+                        <div>
+                            <p>Pos Pemadam</p>
+                            <p>Jakarta Barat</p>
+                            <p>Jakarta Pusat</p>
+                            <p>Jakarta Selatan</p>
+                            <p>Jakarta Timur</p>
+                            <p>Jakarta Utara</p>
+                            <p>Kepulauan Seribu</p>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                    <div class="col-md-12 icon-box" data-aos="fade-up" data-aos-delay="300">
+                      <h4 class="text-center">PEMBUAT PETA: </h4>
+                      <p><strong>EURICO ADITYA AMILUDIN</strong></p>
+                    </div>
+                    <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                    <div class="col-md-12 icon-box" data-aos="fade-up" data-aos-delay="400">
+                      <h4>DOSEN PENGAMPU:</h4>
+                      <p><strong>HIDAYAT PANUNTUN, S.T., M.Eng., D.Sc.</strong></p>
+                    </div>
+                    <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                    <div class="col-md-12 icon-box" data-aos="fade-up" data-aos-delay="400">
+                      <h4>SUMBER DATA:</h4>
+                      <p class="mt-0"><a href="https://data.jakarta.go.id/">https://data.jakarta.go.id/</a></p>
+                    </div>
+                    <hr class="mt-0 icon-box" data-aos="fade-up" style="border: 1px solid black; padding: 0;">
+                    <div class="col-md-12 icon-box" data-aos="fade-up" data-aos-delay="400">
+                      <img src="https://agricia.faperta.ugm.ac.id/wp-content/uploads/sites/377/2018/06/logo-ugm-png.png" alt="" width="30px">
+                      <p>PROGRAM STUDI D4 TEKNOLOGI SURVEI DAN PEMETAAN DASAR <br> DEPARTEMEN TEKNOLOGI KEBUMIAN <br> SEKOLAH VOKASI <br> UNIVERSITAS GADJAH MADA <br>2023 </p>
+                    </div>
+                  </div>
+                </div><!-- End .content-->
+              </div>
+            </div>
+    
+          </div>
+        </section><!-- End About Section -->
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
